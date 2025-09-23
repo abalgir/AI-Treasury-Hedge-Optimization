@@ -26,6 +26,8 @@ All paths use the same:
 - **Optimizer**: SciPy SLSQP, minimizing 0.6*|gap| + 0.3*|ΔEVE| + 0.1*VaR.
 - **Guardrails**: VaR ≤ 1.10× baseline, FX +10% reduction ≥ 35%, gap in [-0.20y, 0.80y].
 - **Scenarios**: Rate shifts (±100/200bps), vol shock (+20%), FX shock (+10%).
+- **Macro Scenarios (LangChain)**: In addition to predefined stresses (parallel rate shifts, vol shocks, FX +10%), the framework integrates **LangChain** to fetch live macro indicators (GDP, inflation, unemployment) and automatically translate them into stress vectors (+bp shifts, FX % moves). These are run through the same scenario harness, allowing treasurers to validate hedges against *real-world economic narratives*, not just abstract shocks.
+
 
 The AI path outperforms, automating universe curation to adapt to market volatility (e.g., US10Y at 5.53bp, corr 0.68) and portfolio complexity (e.g., MBS, CLOs, FX swaps), reducing costs and cycle times for treasury sales (e.g., FX hedges for Thai exporters).
 
@@ -41,6 +43,7 @@ From a controlled run (fixed seed 42, 2024-09-22 to 2025-09-22 data):
 
 ## Repository Structure
 - orchestrator.py        # Main script: runs Minimal, Expanded, AI paths
+- macro_scenario.py      # LangChain integration: fetches GDP, inflation, unemployment from FMP and generates stress vectors + narrative
 - agent.py               # AI loop: proposes, optimizes, repairs universe
 - financial_library.py   # Core functions: I/O, risks, optimization, Grok calls
 - treasury_portfolio.csv # Sample portfolio (assets, liabilities, FX swaps)
